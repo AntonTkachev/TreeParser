@@ -1,7 +1,6 @@
-package WorkingTreeParser
+package ru.sbt.bm
 
 import org.scalatest.{FlatSpec, Matchers}
-import ru.sbt.bm.Node
 import ru.sbt.bm.helpers.{CountRootTagsException, ParserHelper, TagValue, ValueHelper}
 
 class NodeSpec extends FlatSpec with Matchers with ParserHelper with ValueHelper {

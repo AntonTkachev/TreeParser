@@ -1,4 +1,4 @@
-package WorkingTreeParser
+package ru.sbt.bm
 
 class ParserList {
   var head: ParseNode = _

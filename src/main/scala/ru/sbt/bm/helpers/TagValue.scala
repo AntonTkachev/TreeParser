@@ -1,8 +1,8 @@
 package ru.sbt.bm.helpers
 
-/**
-  * Created by sbt-koskovetckiy-aa on 15.06.2017.
-  */
-class TagValue {
+case class TagValue(tag: String, value: String) {
+  def getTag: String = tag
 
+  def getValue: String = value
 }
+

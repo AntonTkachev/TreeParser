@@ -1,12 +1,10 @@
-package WorkingTreeParser
+package ru.sbt.bm
 
-import com.typesafe.scalalogging.StrictLogging
 import ru.sbt.bm.helpers.CountRootTagsException
 
 import scala.collection.mutable.ListBuffer
-import scala.reflect.macros.ParseException
 
-class Node extends StrictLogging {
+class Node {
 
   def parser(parseFile: String) = {
 

@@ -1,4 +1,4 @@
-package WorkingTreeParser
+package ru.sbt.bm
 
 class ParseNode {
   var rootTag: String = _

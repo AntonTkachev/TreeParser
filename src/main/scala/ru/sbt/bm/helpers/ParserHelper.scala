@@ -1,7 +1,8 @@
 package ru.sbt.bm.helpers
 
-import WorkingTreeParser.ParserList
+import ru.sbt.bm.ParserList
 
+import scala.collection.mutable.ListBuffer
 import scala.compat.Platform
 
 trait ParserHelper {
@@ -21,25 +22,52 @@ trait ParserHelper {
     }
 
     def returnRootTag: String = {
-      list.head.rootTag
+      list.head.rootTag.trim
     }
 
-    def getChildren(rootTag: String = ""): List[String] = {
-      var res: List[String] = List.empty[String]
+    def getAllChildren: List[TagValue] = {
+      var res = ListBuffer.empty[List[TagValue]]
+      var head = list.head
+      while (head.hasNext) {
+        res += head.children.map(_.split("=") match {
+          case Array(k, v) => TagValue(k.trim, v.trim)
+          case Array(k) => TagValue(k.trim, "")
+        })
+        head = head.next
+      }
+      res.flatten.toList
+    }
+
+    def getRootTagChildren: List[TagValue] = {
+      try {
+        list.head.children.map(_.split("=") match {
+          case Array(k, v) => TagValue(k.trim, v.trim)
+          case Array(k) => TagValue(k.trim, "")
+        })
+      }
+      catch {
+        case ex: Throwable => throw new IllegalArgumentException(ex.getMessage)
+      }
+    }
+
+    def getTagChildren(rootTag: String): List[TagValue] = {
+      var res = ListBuffer.empty[List[TagValue]]
       var firstElem = list.head
-      if (rootTag.isEmpty) res = firstElem.children
-      else {
-        while (firstElem != null) {
-          if (firstElem.rootTag.replaceAll("\\W", "") == rootTag) res = firstElem.children
+      try {
+        while (firstElem.hasNext) {
+          if (firstElem.rootTag.trim == rootTag) {
+            res += firstElem.children.map(_.split("=") match {
+              case Array(k, v) => TagValue(k.trim, v.trim)
+              case Array(k) => TagValue(k.trim, "")
+            })
+          }
           firstElem = firstElem.next
         }
+        res.flatten.toList
       }
-      if (res.isEmpty) throw new IllegalArgumentException
-      else res.map(_.replaceAll("\t", ""))
-    }
-
-    def hasNext: Boolean = {
-      list.head.rootTag.nonEmpty
+      catch {
+        case ex: Throwable => throw new IllegalArgumentException(ex.getMessage)
+      }
     }
 
   }
